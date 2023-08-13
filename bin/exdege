@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+require 'listen'
+
+target = ARGV.clone.first
+files = Set.new
+
+listener = Listen.to(target) do |modified, added, _removed|
+  (added - files.to_a).each do |file|
+    system("xdg-open #{file}")
+    files.add(file)
+  end
+end
+
+thread = Thread.new { listener.start }
+
+trap('INT') do
+  listener.stop
+  thread.join
+  exit
+end
+
+sleep
+
