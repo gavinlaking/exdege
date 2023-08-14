@@ -5,11 +5,13 @@ require 'listen'
 target = ARGV.clone.first
 files = Set.new
 
+extensions = ['.pdf', '.png']
+
 listener = Listen.to(target) do |_modified, added, _removed|
   (added - files.to_a).each do |file|
-    if File.extname(file) == '.png'
-     system("xdg-open #{file}")
-     files.add(file)
+    if extensions.include?(File.extname(file))
+      system("xdg-open #{file}")
+      files.add(file)
     end
   end
 end
@@ -23,4 +25,3 @@ trap('INT') do
 end
 
 sleep
-
