@@ -5,10 +5,12 @@ require 'listen'
 target = ARGV.clone.first
 files = Set.new
 
-listener = Listen.to(target) do |modified, added, _removed|
+listener = Listen.to(target) do |_modified, added, _removed|
   (added - files.to_a).each do |file|
-    system("xdg-open #{file}")
-    files.add(file)
+    if File.extname(file) == '.png'
+     system("xdg-open #{file}")
+     files.add(file)
+    end
   end
 end
 
