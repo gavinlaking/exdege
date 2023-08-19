@@ -3,6 +3,12 @@
 require 'listen'
 
 target = ARGV.clone.first
+
+if target.nil?
+  puts "Usage: \e[32mexdege\e[33m <some path>\e[39m"
+  exit(1)
+end
+
 files = Set.new
 
 extensions = ['.pdf', '.png']
@@ -25,3 +31,4 @@ trap('INT') do
 end
 
 sleep
+
